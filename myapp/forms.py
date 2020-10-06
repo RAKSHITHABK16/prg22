@@ -9,9 +9,18 @@ def validate_name(name):
         raise ValidationError("Name is Not valid")
     return name
 
+def validated_pincode():
+    pincode = CharField(widget=TextInput(attrs={'type':'number'}),
+                  validators=[RegexValidator(regex='^.{6}$',message='Pincode can have 6 digits')],
+                    required=False, min_length=6)
+    return pincode
+
 class SampleForm(forms.Form):
     name=forms.CharField(max_length=200,required=True,label="Name :",
     validators=[validate_name])
+
+    pincode=forms.IntegerField(required=True,label="Pincode:",
+    validators=[validated_pincode] )
     
     email=forms.EmailField(max_length=100,required=True,label="Email :",
     validators=[validators.MinLengthValidator(10)])
